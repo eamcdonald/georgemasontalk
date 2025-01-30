@@ -152,7 +152,7 @@
 
 
 \begin{frame}{Introduction}
-    This talk is mostly based on the paper
+    This talk is mostly inspired by the paper
     \begin{center}
     M., Sukochev, Lipschitz estimates in quasi-Banach Schatten ideals.
     \emph{Math. Ann.} 383 (2022), no.1--2, 571--619.
@@ -162,26 +162,59 @@
 \begin{frame}{Plan for this talk}
     \begin{enumerate}
         \item{} Operator Lipschitz functions: some basic concepts and history.
-        \item{} Some very light background on Schatten ideals
         \item{} Schur multipliers and the L\"owner identity
+        \item{} Some very light background on Schatten ideals
         \item{} Approximation methods (Besov spaces and wavelets)
     \end{enumerate}
 \end{frame}
 
+
+\section{Operator Lipschitz functions: some basic concepts and history}
+
+
+\begin{frame}{Basic setting}
+    This talk will be about operator theory and functional calculus, but there's no real loss of generality by considering $n\times n$ matrices.
+\pause
+\\
+    \textbf{Functional calculus for matrices:} Given a self-adjoint matrix $A \in M_{n}(\Cplx)$ and a function $f:\Rl\to \Cplx,$ the $n\times n$ matrix $f(A)$ can be defined by
+    \[
+        f(A) = Uf(\Lambda)U^*
+    \]
+    where $A = U\Lambda U^*$ is a diagonalisation, and
+    \[
+        f\begin{pmatrix} \lambda_1 & \cdots & 0 \\
+                            \vdots & \ddots & \vdots \\
+                             0      & \cdots & \lambda_n
+         \end{pmatrix}
+         =\begin{pmatrix} f(\lambda_1) & \cdots & 0 \\
+                             \vdots      & \ddots & \vdots \\
+                             0      & \cdots & f(\lambda_n)
+         \end{pmatrix}.
+    \]
+\end{frame}
+
 \begin{frame}{Operator Lipschitz functions}
-    Let $H$ be a (complex and separable) Hilbert space, and denote
-    the operator norm by $\|\cdot\|_\infty$. A function $f:\Rl\to \Cplx$
-    is said to be \emph{operator Lipschitz} if there exists a constant $C_f$ such that
+    Recall that the operator norm $\|\cdot\|_{\infty}$ of a matrix $A \in M_n(\Cplx)$ may be defined as
+    \[
+        \|A\|_{\infty} := \sup_{|x|_2\leq 1} |Ax|_2.
+    \]
+    where $|\cdot|_2$ is the Euclidean norm.\\
+    \pause
+    A function $f:\Rl\to \Cplx$ is called \emph{Lipschitz} if there exists a constant $c_f$ such that
+    \[
+        |f(t)-f(s)|\leq c_f|t-s|,\quad t,s\in \Rl.
+    \]\pause
+    Similarly, a function $f:\Rl\to \Cplx$ is said to be \emph{operator Lipschitz} if there exists a constant $C_f$ (independent of $n$) such that
     \begin{equation*}
-        \|f(A)-f(B)\|_\infty \leq C_f\|A-B\|_\infty,\quad A,B\in \Bc_{\sa}(H)
+        \|f(A)-f(B)\|_\infty \leq C_f\|A-B\|_\infty,\quad A=A^*,B=B^* \in M_n(\Cplx).
     \end{equation*}
-    \begin{block}{Question (from Krein)}
+    \pause
+    \begin{block}{Question (from M.~G.~Krein, 1950s)}
         Is every Lipschitz function operator Lipschitz?
         \pause
         That is, does $|f(t)-f(s)|\lesssim |t-s|$ imply that $\|f(A)-f(B)\|_{\infty} \lesssim \|A-B\|_{\infty}?$
     \end{block}
 \end{frame}
-
 
 \begin{frame}{Operator Lipschitz functions}
     \begin{block}{Answer}
@@ -192,32 +225,32 @@
     \end{block}
 \end{frame}
 
-\begin{frame}{Finite-dimensional case}
-    If $H$ is $N$-dimensional, then
+\begin{frame}{Dimension-dependent constant}
+    If $f$ is any Lipschitz function on $\Rl,$ and $A,B \in M_n(\Cplx)$ are self-adjoint then
     \[
-        \|f(A)-f(B)\|_{\infty} \leq C_{\mathrm{abs}}\log(1+N)\|f\|_{\mathrm{Lip}}\|A-B\|_{\infty}
+        \|f(A)-f(B)\|_{\infty} \leq C_{\mathrm{abs}}\log(1+n)\|f\|_{\mathrm{Lip}}\|A-B\|_{\infty}
     \]
-    where $C_{\mathrm{abs}}$ is an absolute constant. This is sharp in the order of growth as $N\to\infty.$ I do not know if a sharp estimate for $C_{\mathrm{abs}}$ is known.
+    where $C_{\mathrm{abs}}$ is an absolute constant. This is sharp in the order of growth as $n\to\infty.$ I do not know if a sharp estimate for $C_{\mathrm{abs}}$ is known.
 \end{frame}
 
 
 \begin{frame}{Operator Lipschitz functions}
     It is easy to check that sufficiently good functions are operator Lipschitz.\\
-    Let's check the function $f(x) = e^{i\xi x}$ for $\xi\in \Rl.$ We have
+    Let's check the function $f(x) = e^{i\xi x}$ for $\xi\in \Rl.$ There's a classical integral identity:
     \begin{equation*}
         e^{i\xi A}-e^{i\xi B} = i\xi\int_{0}^1 e^{i\xi (1-\theta)A}(A-B)e^{i\xi \theta B}\,d\theta.
     \end{equation*}
-    The integral converges in the Bochner sense. The triangle inequality implies
+    This is called the Duhamel formula, you can check it by differentiating both sides. The triangle inequality implies
     $$
         \|e^{i\xi A}-e^{i\xi B}\|_{\infty} \leq |\xi|\|A-B\|_{\infty}.
     $$
     \pause
     By Fourier inversion,
     \begin{equation*}
-        \|f(A)-f(B)\|_{\infty} \leq \|A-B\|_\infty\cdot 2\pi \|\widehat{\partial f}\|_1.
+        \|f(A)-f(B)\|_{\infty} \leq \|A-B\|_\infty\cdot 2\pi \|\widehat{f'}\|_1.
     \end{equation*}
     \pause
-    By Cauchy-Schwarz, $\|\widehat{\partial f}\|_1 \leq \|f'\|_2+\|f''\|_2.$ This is a ``good enough" sufficient condition for most purposes.
+    By Cauchy-Schwarz and Plancherel, $\|\widehat{f'}\|_1 \leq \|f'\|_2+\|f''\|_2.$ This is a ``good enough" sufficient condition for most purposes.
 \end{frame}
 
 \begin{frame}{Peller's theorem}
@@ -256,6 +289,70 @@
     \]
 \end{frame}
 
+\section{Schur multipliers and the L\"owner identity}
+
+\begin{frame}{Another perspective: Schur multipliers}
+    Let $A,B \in M_n(\Cplx).$ The Schur product (a.k.a. Hadamard product, entrywise product...) of $A$ and $B$ is defined by
+    \[
+        (A_{j,k})_{j,k}\circ (B_{j,k})_{j,k} = (A_{j,k}B_{j,k})_{j,k}.
+    \]
+    \pause
+    That is, $A\circ B$ is the matrix formed by multiplying the entries of $A$ and $B$ componentwise.\\
+
+    What is the point of such a thing?
+\end{frame}
+
+
+\begin{frame}{L\"{o}wner's formula}
+    The Schur product is very important in linear algebra. One reason for this is that it can be used to \emph{linearise}
+    nonlinear operators.\\ \pause
+    If $A$ and $B$ are self-adjoint matrices with eigendecompositions
+    \[
+        A\xi_j= \lambda_j(A)\xi_j,\quad B\eta_k = \lambda_k(B)\eta_k,\quad 0\leq j,k < n
+    \]
+    then
+    \[
+        f(A)\xi_j = f(\lambda_j(A))\xi_j,\quad f(B)\eta_k = f(\lambda_k(B))\eta_k,\quad 0\leq j,k < n.
+    \]
+    K.~L\"owner noticed that therefore
+    \[
+        \langle \xi_j,(f(A)-f(B))\eta_k\rangle =  \frac{f(\lambda_j(A))-f(\lambda_k(B))}{\lambda_j(A)-\lambda_k(B)}\langle \xi_j,(A-B)\eta_k\rangle
+    \]
+    for all $0\leq j,k < n.$
+\end{frame}
+
+\begin{frame}{L\"{o}wner's formula}
+    In other words, let $\Psi_{f,A,B}$ denote the ``L\"{o}wner matrix"
+    \[
+        \Psi_{f,A,B} = \left(\frac{f(\lambda_j(A))-f(\lambda_k(B))}{\lambda_j(A)-\lambda_k(B)}\right)_{j,k=0}^{n-1}
+    \]
+    then
+    \[
+        f(A)-f(B) = \Psi_{f,A,B} \circ (A-B)
+    \]
+    where the Schur product $\circ$ is computed with respect to the matrix basis $\{\xi_j\otimes \eta_k\}_{j,k=0}^{n-1}.$\\
+    \pause
+    This means that studying the highly nonlinear relationship
+    \[
+        A-B \mapsto f(A)-f(B)
+    \]
+    is reduced to the study of the linear map
+    \[
+        X\mapsto \Psi_{f,A,B}\circ X.
+    \]
+\end{frame}
+
+\begin{frame}{How to study operator Lipschitz functions}
+    Therefore if we want to find the operator Lipschitz functions, we need to characterise
+    those functions $f$ such that for all $A$ and $B$, we have
+    \[
+        \|\Psi_{f,A,B}\circ X \|_{\infty} \leq C_f\|X\|_{\infty}.
+    \]
+    Because this is a linear (rather than nonlinear) problem, it turns out to be much easier.
+\end{frame}
+
+\section{Some very light background on Schatten ideals}
+
 \begin{frame}{Schatten ideals}
     If $T$ is a compact operator on $H$, the singular value sequence of $T$ is defined as
     $$
@@ -276,20 +373,45 @@
 \begin{frame}{$\Lc_p$-operator Lipschitz functions}
     A function $f$ on $\Rl$ is said to be $\Lc_p$-operator Lipschitz if there exists a constant $C_f>0$ such that
     $$
-        \|f(A)-f(B)\|_p \leq C_f\|A-B\|_p,\quad A,B \in \Bc_{\sa}(H).
+        \|f(A)-f(B)\|_p \leq C_f\|A-B\|_p,\quad A=A^*,B=B^* \in M_n(\Cplx)
     $$
-    By a duality argument, $\Lc_1$-operator Lipschitz is the same thing as operator Lipschitz.\pause
-    
-    What about $1 < p < \infty$?\pause
+    By Loewner's identity, this follows from (actually, is equivalent to)
+    \[
+        \|\Psi_{f,A,B}\circ X\|_p \leq C_f\|X\|_p,\quad X\in M_n(\Cplx).
+    \]
+\end{frame}
+
+\begin{frame}{$\Lc_2$-operator Lipschitz function}
+    By far the easiest case is $p=2,$ because the $\Lc_2$ norm of a matrix is the same as the $\ell_2$ norm of its entries
+    \[
+        \|\{A_{j,k}\}_{j,k}\|_2 = \left(\sum_{j,k} |A_{j,k}|^2\right)^{1/2}.
+    \]
+    Therefore
+    \[
+        \|M\circ A\|_{2} \leq \max\{|M_{j,k}|\}_{j,k} \|A\|_2.
+    \]
+    It follows that
+    \begin{align*}
+        \|f(A)-f(B)\|_2 &= \|\Psi_{f,A,B}\circ (A-B)\|_2\\
+                        &\leq \max_{j,k} \left\{\left|\frac{f(\lambda_j(A))-f(\lambda_k(B))}{\lambda_j(A)-\lambda_k(B)}\right|\right\}\|A-B\|_2\\
+                        &\leq\|f\|_{\mathrm{Lip}}\|A-B\|_2.
+    \end{align*}
+\end{frame}
+
+
+
+\begin{frame}{What about $p\neq 2$?}
+    So any Lipschitz function $f$ is Lipschitz in $\Lc_2.$ What about other Schatten ideals?
     \begin{theorem}[Potapov and Sukochev (2010)]
         For $1 < p < \infty$, all Lipschitz functions are $\Lc_p$-operator Lipschitz.
-    \end{theorem}   
+    \end{theorem}
     \pause
-    For $p=2$ this is almost trivial and has been known for approx.~110 years. For $p\neq 2$, this requires some very deep
-    harmonic analysis. \pause
-    There are now essentially four proofs of Potapov-Sukochev. The most recent is due to
-    Conde-Alonso, Gonz\'alez-P\'erez, Parcet and Tablate and uses operator-valued harmonic analysis.
+    For $p\neq 2$, this requires some very deep harmonic analysis. \pause
+    There are now essentially four proofs of Potapov-Sukochev. The most recent is relatively simple and due to
+    Conde-Alonso, Gonz\'alez-P\'erez, Parcet and Tablate, but still uses advanced operator-valued harmonic analysis.
 \end{frame}
+
+
 
 \begin{frame}{What about $0 < p < 1$?}
     For $0 < p < 1$, we can still define
@@ -307,23 +429,23 @@
     \]
 \end{frame}
 
-
-\begin{frame}{Geometry in $\Lc_p.$}
-    The unit ball $B = \{T\;:\; \|T\|_p\leq 1\}$ in $\Lc_p$ is not convex.
-
-    i.e., if $\xi_1,\ldots,\xi_n\in B$ then it might happen that
-    \[
-        \theta_1\xi_1+\cdots+\theta_n\xi_n\notin B,\quad |\theta_1|+\cdots+|\theta_n|\leq 1.
-    \]
-    For this reason the theory of integration $\Lc_p$-valued functions is not straightforward. We could have continuous functions $f \in C([0,1],\Lc_p)$
-    whose integral is not in $\Lc_p.$\\
-    \pause
-    Instead, $B$ is only closed under $p$-convex combinations, i.e.
-    \[
-        \theta_1\xi_1+\cdots+\theta_n \xi_n \in B,\quad |\theta_1|^p+\cdots+|\theta_n|^p \leq 1.
-    \]
-\end{frame}
-
+%
+% \begin{frame}{Geometry in $\Lc_p.$}
+%     The unit ball $B = \{T\;:\; \|T\|_p\leq 1\}$ in $\Lc_p$ is not convex.
+%
+%     i.e., if $\xi_1,\ldots,\xi_n\in B$ then it might happen that
+%     \[
+%         \theta_1\xi_1+\cdots+\theta_n\xi_n\notin B,\quad |\theta_1|+\cdots+|\theta_n|\leq 1.
+%     \]
+%     For this reason the theory of integration $\Lc_p$-valued functions is not straightforward. We could have continuous functions $f \in C([0,1],\Lc_p)$
+%     whose integral is not in $\Lc_p.$\\
+%     \pause
+%     Instead, $B$ is only closed under $p$-convex combinations, i.e.
+%     \[
+%         \theta_1\xi_1+\cdots+\theta_n \xi_n \in B,\quad |\theta_1|^p+\cdots+|\theta_n|^p \leq 1.
+%     \]
+% \end{frame}
+%
 
 \begin{frame}{$\Lc_p$-Lipschitz functions for $0 < p < 1.$}
     Which functions are Lipschitz in $\Lc_p$ when $0 < p < 1$? \\
@@ -333,116 +455,115 @@
     What about $f(t) = \exp(it\xi)$ for $\xi\in \Rl$?
 \end{frame}
 
-\begin{frame}{Schur multipliers}
-    The usual method to prove $\Lc_p$-estimates in $0<p<1$ is the same as for $p\geq 1,$ to use Schur multipliers.
-
-    If $A = \{A_{j,k}\}_{j,k}$ and $B = \{B_{j,k}\}_{j,k}$ are matrices of the same size, then $A\circ B := \{A_{j,k}B_{j,k}\}_{j,k}.$
-
-    \begin{definition}
-        Let $m = \{m_{j,k}\}_{j,k=1}^n$ be an $n\times n$ matrix. Define
-        \[
-            \|m\|_{\mf_p} := \sup_{\|B\|_{p}\leq 1} \|m\circ B\|_p.
-        \]
-        In general, let $m:\Rl^2\to \Cplx$ be bounded and define
-        \[
-            \|m\|_{\mf_p} := \sup_{x_1,\ldots,x_n,y_1,\ldots,y_n\in \Rl} \|\{m(x_j,y_k)\}_{j,k=1}^n\|_{\mf_p}.
-        \]
-    \end{definition}
-%     We have some obvious properties for $0<p\leq 1:$
-%     \begin{itemize}
-%         \item{} $\|m_1+m_2\|_{\mf_p}^p \leq \|m_1\|_{\mf_p}^p+\|m_2\|_{\mf_p}^p.$
-%         \item{} If $m_1$ is a principal submatrix of $m_2,$ then $\|m_1\|_{\mf_p} \leq \|m_2\|_{\mf_p}.$
-%     \end{itemize}
-%     We could also consider the ``cb" version. This does not make much difference.
-\end{frame}
-
-\begin{frame}{Schur multipliers and operator-Lipschitz functions}
-    A folk result:
-    \begin{theorem}[Hadamard(?), Schur(?), L\"owner(?), Daletskii-Krein(?)]
-        Let $1\leq p\leq \infty,$ and let $f$ be a measurable function on $\Rl.$ Define
-        \[
-            f^{[1]}(\lambda,\mu) = \begin{cases}
-                                        \frac{f(\lambda)-f(\mu)}{\lambda-\mu},\quad \lambda \neq \mu\\
-                                        f'(\lambda),\quad \lambda=\mu.
-                                   \end{cases}
-        \]
-        Then $f$ is $\Lc_p$-Lipschitz if and only if $f^{[1]}$ is a bounded Schur multiplier.
-    \end{theorem}
-    \pause
-    If $f$ is not differentiable then $f'(\lambda)$ does not make sense everywhere, but this is no big deal. Bounded diagonal matrices are Schur multipliers in $\Lc_p$
-    for any $1\leq p\leq \infty$ so we can make $f^{[1]}(\lambda,\lambda)$ any bounded function of $\lambda$ without changing the result.
-\end{frame}
-
-
-
-
-\begin{frame}{Schur multipliers in $\Lc_p$}
-    One noteworthy difference between $p=1$ and $p<1$ is the following example:
-    \begin{example}
-        Let $I_n = \{\delta_{j,k}\}_{j,k=0}^{n-1}$ be the $n\times n$ identity matrix. Then
-        \[
-            \|I_n\|_{\mf_p} = n^{\frac1p-1}.
-        \]
-        To see this, compute $I_n\circ (\xi\otimes \xi)$ where $\xi = (1,\ldots,1).$
-    \end{example}
-    \pause
-    What this means is that restriction to the diagonal
-    \[
-        \{A_{j,k}\}_{j,k\geq 0} \mapsto \{A_{j,j}\delta_{j,k}\}_{j,k=0}^\infty
-    \]
-    is not bounded in $\Lc_p$ for any $0<p<1$!
-\end{frame}
-
-
-
-\begin{frame}{Schur multipliers and operator-Lipschitz functions in $\Lc_p$ for $0<p<1.$}
-    \begin{theorem}
-        Let $0< p\leq \infty.$ and let $f$ be a measurable function on $\Rl.$ Then $f$ is $\Lc_p$-Lipschitz if and only if
-        \[
-            \sup_{\{\lambda_j\},\{\mu_j\}} \|\{f^{[1]}(\lambda_j,\mu_k)\}_{j,k}\|_{\mf_p} < \infty
-        \]
-        where the supremum is over all \emph{disjoint} sequences $\{\lambda_j\}_{j}$ and $\{\mu_k\}_k.$
-    \end{theorem}
-    Since we only consider disjoint sequences, the diagonal does not enter the picture.
-\end{frame}
-
-
-\begin{frame}{An example}
-    Consider the function
-    \[
-        f(x) = \sin(x)
-    \]
-    and $\mu_j=\lambda_j=2\pi j.$ Then
-    \[
-        f^{[1]}(\lambda_j,\mu_k) = \delta_{j,k}.
-    \]
-    But this is not a Schur multiplier of $\Lc_p$! The same reasoning applies to any periodic function $f$ with $f'(\lambda)\neq 0$ for some $\lambda.$
-    \pause
-    This argument is obviously flawed, we are supposed to consider \emph{disjoint} sequences.
-\end{frame}
-
-\begin{frame}{A corrected example}
-    We can fix the previous (wrong) argument by shifting one of the sequences by $\varepsilon>0.$ Let $f$ be a $1$-periodic function. Consider the sequences
-    \[
-        \lambda_j = j+\varepsilon, \mu_k = k,\quad j,k\geq 0.
-    \]
-    Then
-    \[
-        f^{[1]}(\lambda_j,\mu_k) = \frac{f(j+\varepsilon)-f(k)}{j-k+\varepsilon} = (f(\varepsilon)-f(0))\frac{1}{j-k+\varepsilon},\quad j,k\geq 0.
-    \]
-    If $f(\varepsilon)\neq f(0),$ then we need to consider the matrix
-    \[
-        \{(j-k+\varepsilon)^{-1}\}_{j,k\geq 0}.
-    \]
-    This matrix is not diagonal, but a straightforward modification of the argument for $\{\delta_{j,k}\}_{j,k\geq 0}$ shows that it is not a Schur multiplier of $\Lc_p$ for any $0<p<1.$
-    \pause
-    Aleksandrov and Peller have characterised Schur multipliers of $\Lc_p$ of the Herz-Toeplitz form $m(j-k),$ so we could also use their result.
-\end{frame}
-
-
+% \begin{frame}{Schur multipliers}
+%     The usual method to prove $\Lc_p$-estimates in $0<p<1$ is the same as for $p\geq 1,$ to use Schur multipliers.
+%
+%     If $A = \{A_{j,k}\}_{j,k}$ and $B = \{B_{j,k}\}_{j,k}$ are matrices of the same size, then $A\circ B := \{A_{j,k}B_{j,k}\}_{j,k}.$
+%
+%     \begin{definition}
+%         Let $m = \{m_{j,k}\}_{j,k=1}^n$ be an $n\times n$ matrix. Define
+%         \[
+%             \|m\|_{\mf_p} := \sup_{\|B\|_{p}\leq 1} \|m\circ B\|_p.
+%         \]
+%         In general, let $m:\Rl^2\to \Cplx$ be bounded and define
+%         \[
+%             \|m\|_{\mf_p} := \sup_{x_1,\ldots,x_n,y_1,\ldots,y_n\in \Rl} \|\{m(x_j,y_k)\}_{j,k=1}^n\|_{\mf_p}.
+%         \]
+%     \end{definition}
+% %     We have some obvious properties for $0<p\leq 1:$
+% %     \begin{itemize}
+% %         \item{} $\|m_1+m_2\|_{\mf_p}^p \leq \|m_1\|_{\mf_p}^p+\|m_2\|_{\mf_p}^p.$
+% %         \item{} If $m_1$ is a principal submatrix of $m_2,$ then $\|m_1\|_{\mf_p} \leq \|m_2\|_{\mf_p}.$
+% %     \end{itemize}
+% %     We could also consider the ``cb" version. This does not make much difference.
+% \end{frame}
+%
+% \begin{frame}{Schur multipliers and operator-Lipschitz functions}
+%     A folk result:
+%     \begin{theorem}[Hadamard(?), Schur(?), L\"owner(?), Daletskii-Krein(?)]
+%         Let $1\leq p\leq \infty,$ and let $f$ be a measurable function on $\Rl.$ Define
+%         \[
+%             f^{[1]}(\lambda,\mu) = \begin{cases}
+%                                         \frac{f(\lambda)-f(\mu)}{\lambda-\mu},\quad \lambda \neq \mu\\
+%                                         f'(\lambda),\quad \lambda=\mu.
+%                                    \end{cases}
+%         \]
+%         Then $f$ is $\Lc_p$-Lipschitz if and only if $f^{[1]}$ is a bounded Schur multiplier.
+%     \end{theorem}
+%     \pause
+%     If $f$ is not differentiable then $f'(\lambda)$ does not make sense everywhere, but this is no big deal. Bounded diagonal matrices are Schur multipliers in $\Lc_p$
+%     for any $1\leq p\leq \infty$ so we can make $f^{[1]}(\lambda,\lambda)$ any bounded function of $\lambda$ without changing the result.
+% \end{frame}
+%
+%
+%
+%
+% \begin{frame}{Schur multipliers in $\Lc_p$}
+%     One noteworthy difference between $p=1$ and $p<1$ is the following example:
+%     \begin{example}
+%         Let $I_n = \{\delta_{j,k}\}_{j,k=0}^{n-1}$ be the $n\times n$ identity matrix. Then
+%         \[
+%             \|I_n\|_{\mf_p} = n^{\frac1p-1}.
+%         \]
+%         To see this, compute $I_n\circ (\xi\otimes \xi)$ where $\xi = (1,\ldots,1).$
+%     \end{example}
+%     \pause
+%     What this means is that restriction to the diagonal
+%     \[
+%         \{A_{j,k}\}_{j,k\geq 0} \mapsto \{A_{j,j}\delta_{j,k}\}_{j,k=0}^\infty
+%     \]
+%     is not bounded in $\Lc_p$ for any $0<p<1$!
+% \end{frame}
+%
+%
+%
+% \begin{frame}{Schur multipliers and operator-Lipschitz functions in $\Lc_p$ for $0<p<1.$}
+%     \begin{theorem}
+%         Let $0< p\leq \infty.$ and let $f$ be a measurable function on $\Rl.$ Then $f$ is $\Lc_p$-Lipschitz if and only if
+%         \[
+%             \sup_{\{\lambda_j\},\{\mu_j\}} \|\{f^{[1]}(\lambda_j,\mu_k)\}_{j,k}\|_{\mf_p} < \infty
+%         \]
+%         where the supremum is over all \emph{disjoint} sequences $\{\lambda_j\}_{j}$ and $\{\mu_k\}_k.$
+%     \end{theorem}
+%     Since we only consider disjoint sequences, the diagonal does not enter the picture.
+% \end{frame}
+%
+%
+% \begin{frame}{An example}
+%     Consider the function
+%     \[
+%         f(x) = \sin(x)
+%     \]
+%     and $\mu_j=\lambda_j=2\pi j.$ Then
+%     \[
+%         f^{[1]}(\lambda_j,\mu_k) = \delta_{j,k}.
+%     \]
+%     But this is not a Schur multiplier of $\Lc_p$! The same reasoning applies to any periodic function $f$ with $f'(\lambda)\neq 0$ for some $\lambda.$
+%     \pause
+%     This argument is obviously flawed, we are supposed to consider \emph{disjoint} sequences.
+% \end{frame}
+%
+% \begin{frame}{A corrected example}
+%     We can fix the previous (wrong) argument by shifting one of the sequences by $\varepsilon>0.$ Let $f$ be a $1$-periodic function. Consider the sequences
+%     \[
+%         \lambda_j = j+\varepsilon, \mu_k = k,\quad j,k\geq 0.
+%     \]
+%     Then
+%     \[
+%         f^{[1]}(\lambda_j,\mu_k) = \frac{f(j+\varepsilon)-f(k)}{j-k+\varepsilon} = (f(\varepsilon)-f(0))\frac{1}{j-k+\varepsilon},\quad j,k\geq 0.
+%     \]
+%     If $f(\varepsilon)\neq f(0),$ then we need to consider the matrix
+%     \[
+%         \{(j-k+\varepsilon)^{-1}\}_{j,k\geq 0}.
+%     \]
+%     This matrix is not diagonal, but a straightforward modification of the argument for $\{\delta_{j,k}\}_{j,k\geq 0}$ shows that it is not a Schur multiplier of $\Lc_p$ for any $0<p<1.$
+%     \pause
+%     Aleksandrov and Peller have characterised Schur multipliers of $\Lc_p$ of the Herz-Toeplitz form $m(j-k),$ so we could also use their result.
+% \end{frame}
+%
+%
 
 \begin{frame}{Periodic functions are not $\Lc_p$-Lipschitz for $0 < p < 1$.}
-    Summarising the preceding reasoning:
     \begin{lemma}[M. and Sukochev (2022)]
         Let $0 < p < 1$, and let $f$ be a periodic function on $\Rl$. Then $f$ is $\Lc_p$-Lipschitz
         if and only if it is constant.
@@ -454,84 +575,87 @@
         are unlikely to work.
     \end{itemize}
 \end{frame}
+% %
+% % \begin{frame}{Fourier multipliers}
+% %     An analogous issue is Fourier multipliers in $L_p(\Circ)$ for $0<p<1.$
+% %     \begin{theorem}
+% %         Let $m \in \ell_{\infty}(\Itgr)$ and $0<p<1.$ The Fourier multiplier
+% %         \[
+% %             T_m:L_2(\Circ)\to L_2(\Circ),\quad T_m(\exp(i\theta n)) = m(n)\exp(i\theta n),\quad n\in \Itgr
+% %         \]
+% %         is bounded on $L_p(\Circ)$ if and only if $m$ has the form
+% %         \[
+% %             m(n) = \sum_{j=0}^\infty c_j \exp(in\zeta_j),\quad n\in \Itgr
+% %         \]
+% %         where $\sum_{j} |c_j|^p < \infty.$
+% %     \end{theorem}
+% %     In other words, the only $L_p(\Circ)$ multipliers for $0<p<1$ are shift operators and $p$-convex combinations of shifts.
+% % \end{frame}
+% %
+% % \begin{frame}{Strategies to get $\Lc_p$-operator Lipschitz estimates}
+% %     In the $\Lc_{\infty}$ case, we started with a class of functions $\{\exp(i\xi x)\}_{\xi\in \Rl}$ for which Lipschitz estimates are easy, and derived a more general class by taking convex combinations.
+% %
+% %     If we could find some set $\{\psi_j\}$ of functions which we know are $\Lc_p$-Lipschitz, then we could conclude that functions of the form
+% %     \[
+% %         \sum_j c_j\psi_j
+% %     \]
+% %     are also $\Lc_p$-operator Lipschitz.
+% % \end{frame}
+% %
+% % \begin{frame}{Strategies to get $\Lc_p$-operator Lipschitz estimates}
+% %     We know that if $f_\lambda(t) = (t+\lambda)^{-1},$ where $\lambda\in \Cplx\setminus \Rl,$ then
+% %     \[
+% %         \|f_{\lambda}\|_{\Lc_p-\mathrm{Lip}} \leq |\Im(\lambda)|^{-2}.
+% %     \]
+% %     Essentially every smooth function on $\Rl$ belongs to the closed convex hull of $\{f_\lambda\}_{\Im(\lambda)\neq 0}.$\\
+% %     \pause
+% %     I tried for a long time to characterise functions $f$ having a decomposition like
+% %     \[
+% %         f(t) = \sum_{j=0}^\infty c_j|\Im(\lambda_j)|^2f_{\lambda_j}(t)
+% %     \]
+% %     where $\sum_{j=0}^\infty |c_j|^p < \infty,$ but with no success.
+% % \end{frame}
 %
-% \begin{frame}{Fourier multipliers}
-%     An analogous issue is Fourier multipliers in $L_p(\Circ)$ for $0<p<1.$
-%     \begin{theorem}
-%         Let $m \in \ell_{\infty}(\Itgr)$ and $0<p<1.$ The Fourier multiplier
-%         \[
-%             T_m:L_2(\Circ)\to L_2(\Circ),\quad T_m(\exp(i\theta n)) = m(n)\exp(i\theta n),\quad n\in \Itgr
-%         \]
-%         is bounded on $L_p(\Circ)$ if and only if $m$ has the form
-%         \[
-%             m(n) = \sum_{j=0}^\infty c_j \exp(in\zeta_j),\quad n\in \Itgr
-%         \]
-%         where $\sum_{j} |c_j|^p < \infty.$
-%     \end{theorem}
-%     In other words, the only $L_p(\Circ)$ multipliers for $0<p<1$ are shift operators and $p$-convex combinations of shifts.
-% \end{frame}
-%
-% \begin{frame}{Strategies to get $\Lc_p$-operator Lipschitz estimates}
-%     In the $\Lc_{\infty}$ case, we started with a class of functions $\{\exp(i\xi x)\}_{\xi\in \Rl}$ for which Lipschitz estimates are easy, and derived a more general class by taking convex combinations.
-%
-%     If we could find some set $\{\psi_j\}$ of functions which we know are $\Lc_p$-Lipschitz, then we could conclude that functions of the form
+% \begin{frame}{An idea}
+%     Consider the matrix
+%     \begin{equation}\label{model_schur}
+%         \left\{\frac{c_j-c_k}{j-k+\varepsilon}\right\}_{j,k\geq 0}
+%     \end{equation}
+%     where $c_j$ is a scalar sequence. This is approximately a model for $f^{[1]}(j+\varepsilon,k)$ where $f$ is a function of the form
 %     \[
-%         \sum_j c_j\psi_j
+%         f(x) = \sum_{k\in \Itgr} c_k\psi(x-k)
 %     \]
-%     are also $\Lc_p$-operator Lipschitz.
-% \end{frame}
-%
-% \begin{frame}{Strategies to get $\Lc_p$-operator Lipschitz estimates}
-%     We know that if $f_\lambda(t) = (t+\lambda)^{-1},$ where $\lambda\in \Cplx\setminus \Rl,$ then
-%     \[
-%         \|f_{\lambda}\|_{\Lc_p-\mathrm{Lip}} \leq |\Im(\lambda)|^{-2}.
-%     \]
-%     Essentially every smooth function on $\Rl$ belongs to the closed convex hull of $\{f_\lambda\}_{\Im(\lambda)\neq 0}.$\\
+%     where $\psi$ is some bump function.
+%     \begin{lemma}
+%         If $\sum_{j} |c_j|^{\frac{p}{1-p}}<\infty$ then \eqref{model_schur} is a Schur multiplier of $\Lc_p.$
+%     \end{lemma}
 %     \pause
-%     I tried for a long time to characterise functions $f$ having a decomposition like
+%     Why is it $\frac{p}{1-p}$? It comes down to the inequality
 %     \[
-%         f(t) = \sum_{j=0}^\infty c_j|\Im(\lambda_j)|^2f_{\lambda_j}(t)
+%         (\sum_{j} |a_jb_j|^p)^{\frac1p} \leq (\sum_{j} |a_j|^{\frac{p}{1-p}})^{\frac{1-p}{p}}(\sum_{j} |b_j|)
 %     \]
-%     where $\sum_{j=0}^\infty |c_j|^p < \infty,$ but with no success.
 % \end{frame}
+%
+% \begin{frame}{Sums of shifted bump functions}
+%     With considerably more effort, it is possible to prove the following:
+%     \begin{theorem}
+%         Let $\psi \in C^k_c(\Rl),$ where $k>\frac{2}{p}-1.$ If $\{c_k\}_{k\in \Itgr}$ is some scalar sequence, and
+%         \[
+%             f(x) = \sum_{k\in \Itgr} c_k\psi(x-k)
+%         \]
+%         then
+%         \[
+%             \|f^{[1]}\|_{\mf_p} \lesssim \|\{c_k\}_{k\in \Itgr}\|_{\ell_{\frac{p}{1-p}}}.
+%         \]
+%     \end{theorem}
+%     What kind of functions can we build out of functions like this?
+% \end{frame}
+%
 
-\begin{frame}{An idea}
-    Consider the matrix
-    \begin{equation}\label{model_schur}
-        \left\{\frac{c_j-c_k}{j-k+\varepsilon}\right\}_{j,k\geq 0}
-    \end{equation}
-    where $c_j$ is a scalar sequence. This is approximately a model for $f^{[1]}(j+\varepsilon,k)$ where $f$ is a function of the form
-    \[
-        f(x) = \sum_{k\in \Itgr} c_k\psi(x-k)
-    \]
-    where $\psi$ is some bump function.
-    \begin{lemma}
-        If $\sum_{j} |c_j|^{\frac{p}{1-p}}<\infty$ then \eqref{model_schur} is a Schur multiplier of $\Lc_p.$
-    \end{lemma}
-    \pause
-    Why is it $\frac{p}{1-p}$? It comes down to the inequality
-    \[
-        (\sum_{j} |a_jb_j|^p)^{\frac1p} \leq (\sum_{j} |a_j|^{\frac{p}{1-p}})^{\frac{1-p}{p}}(\sum_{j} |b_j|)
-    \]
-\end{frame}
-
-\begin{frame}{Sums of shifted bump functions}
-    With considerably more effort, it is possible to prove the following:
-    \begin{theorem}
-        Let $\psi \in C^k_c(\Rl),$ where $k>\frac{2}{p}-1.$ If $\{c_k\}_{k\in \Itgr}$ is some scalar sequence, and
-        \[
-            f(x) = \sum_{k\in \Itgr} c_k\psi(x-k)
-        \]
-        then
-        \[
-            \|f^{[1]}\|_{\mf_p} \lesssim \|\{c_k\}_{k\in \Itgr}\|_{\ell_{\frac{p}{1-p}}}.
-        \]
-    \end{theorem}
-    What kind of functions can we build out of functions like this?
-\end{frame}
+\section{Approximation methods (Besov spaces and wavelets)}
 
 \begin{frame}{Wavelet methods}
-    What is a good way of approximating a general function from compactly supported $C^k$-functions?\pause
+    What is a good way of approximating a general function by nicer functions?
     \begin{theorem}[Daubechies (1988)]
         For all $k>0$, there exists a compactly supported $C^k$ function $\psi$ such that the system of translations
         and dilations
@@ -541,7 +665,6 @@
         forms an orthonormal basis of $L_2(\Rl).$
     \end{theorem}
 \end{frame}
-
 
 
 \begin{frame}{Wavelet methods}
@@ -589,9 +712,10 @@
 %     we easily conclude that $\|f\|_{\Lc_p-\mathrm{Lip}} \lesssim \|f\|_{B^{\frac1p}_{\frac{p}{1-p},p}(\Rl)}.$
     \begin{theorem}[M. and Sukochev (2022)]
         Let $0 < p < 1.$ Let $f \in \dot{B}^{\frac1p}_{\frac{p}{1-p},p}(\Rl)$ be Lipschitz continuous. Then $f$ is $\Lc_p$-Lipschitz and
-        $$
-            \|f(A)-f(B)\|_p \leq C_{p}(\|f'\|_\infty+\|f\|_{\dot{B}^{\frac1p}_{\frac{p}{1-p},p}(\Rl)})\|A-B\|_p,\quad A,B\in \Bc_{\sa}(H).
-        $$
+        for all self-adjoint matrices $A$ and $B$,
+        \begin{align*}
+            \|f(A)-f(B)\|_p \leq C_{p}(\|f\|_{\mathrm{Lip}}+\|f\|_{\dot{B}^{\frac1p}_{\frac{p}{1-p},p}(\Rl)})\|A-B\|_p
+        \end{align*}
     \end{theorem}
     \pause
     In other words, we require that $f$ be Lipschitz and for some $n>\frac1p$ that
@@ -601,7 +725,7 @@
     \pause
     For example, $f',\ldots f^{(k)} \in L_{\frac{p}{1-p}}(\Rl)$ where $k > \frac{1}{p}-1$ is sufficient.
 \end{frame}
-%
+
 % \begin{frame}{What else can we do?}
 %     Wavelets are not new, but their application to this theory is. \pause
 %     Some other things we can achieve:
